@@ -24,8 +24,13 @@ public:
     // Constructor
     // TODO: Constructor with third optional parameter.
     //       Use an initialization list.
-    Matrix1
-
+    Matrix1(size_t rows, size_t cols, const T& initial_val = T()): m_rows(rows), m_cols(cols), m_data(rows * cols, initial_val){
+        if (rows == 0 || cols == 0) {
+            throw std::invalid_argument(
+                "Matrix dimensions must be greater than zero."
+            );
+    }
+}
     // Getters
     size_t rows() const { return m_rows; }
     size_t cols() const { return m_cols; }
@@ -69,10 +74,18 @@ public:
         Matrix1<T> result(m_rows, other.m_cols, T(0));
 
         // TODO: Analyze Cache-friendly loop order (i, k, j) to optimize data locality
+        //This order makes it cache friendly because it j goes through the row k, which means
+        //it accesses values that are next to each other, making it cache-friendly. Also, 
+        //the value temp saves us time in accessing the value from the array over and over again.
+        //rows=same rows as result
         for (size_t i = 0; i < m_rows; ++i) {
+            //mcols are the same as 2nd matrixes rows
             for (size_t k = 0; k < m_cols; ++k) {
+                //first matrix(i, k) value
                 T temp = (*this)(i, k);
+                //other cols is col of result
                 for (size_t j = 0; j < other.m_cols; ++j) {
+                    //value*value
                     result(i, j) += temp * other(k, j);
                 }
             }
