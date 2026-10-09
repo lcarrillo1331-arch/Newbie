@@ -218,9 +218,9 @@ int main() {
     CMatrix matrix2(4, 2, 0);
 
     // TODO: Call to multiply matrices
-
+    CMatrix result = matrix1.multiply(matrix2);
     print(matrix1);
     print(matrix2);
     // TODO:  output resulting multiplied matrix
-
+    print(result);
 }
